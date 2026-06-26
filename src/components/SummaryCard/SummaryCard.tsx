@@ -1,4 +1,5 @@
 ﻿import type { ReactNode } from "react"
+import "./SummaryCard.styles.css"
 
 type SummaryCardProps = {
   icon: ReactNode

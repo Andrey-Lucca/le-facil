@@ -1,0 +1,32 @@
+﻿.upload-area.ant-upload-wrapper {
+  display: block;
+  max-width: 760px;
+}
+
+.upload-area .ant-upload-drag {
+  min-height: 260px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #c3b2e3, #b8ccfa);
+}
+
+.upload-icon-wrap {
+  width: 56px;
+  height: 56px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.55);
+  font-size: 28px;
+}
+
+.upload-area h2 {
+  margin: 12px 0 6px;
+}
+
+.upload-area p {
+  margin: 0 0 16px;
+  color: #363a40;
+}

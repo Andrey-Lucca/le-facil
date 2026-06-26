@@ -1,0 +1,90 @@
+﻿.reading-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.reading-card,
+.empty-card {
+  border: 1px solid #e8dcc8;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.reading-card {
+  min-height: 140px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 20px;
+}
+
+.reading-card.selected {
+  border-color: #111111;
+}
+
+.reading-select {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.reading-icon {
+  width: 64px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 28px;
+}
+
+.reading-content {
+  min-width: 0;
+}
+
+.reading-content strong,
+.reading-content span,
+.reading-content small {
+  display: block;
+}
+
+.reading-content strong {
+  max-width: 100%;
+  margin-bottom: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reading-content span,
+.reading-content small {
+  color: #5f6368;
+  font-size: 12px;
+}
+
+.reading-actions {
+  display: grid;
+  justify-items: end;
+  gap: 12px;
+}
+
+.empty-card {
+  min-height: 140px;
+  display: grid;
+  align-content: center;
+  gap: 6px;
+  padding: 24px;
+}
+
+.empty-card span {
+  color: #5f6368;
+}

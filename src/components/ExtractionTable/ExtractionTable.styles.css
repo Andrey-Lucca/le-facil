@@ -1,0 +1,53 @@
+﻿.results-panel {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid #e8dcc8;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+
+.results-title {
+  min-width: 0;
+}
+
+.results-title h2 {
+  margin: 0;
+  color: #111111;
+}
+
+.results-title p {
+  max-width: 100%;
+  margin: 8px 0 0;
+  overflow: hidden;
+  color: #5f6368;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table-toolbar {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 280px));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.ant-table-wrapper {
+  min-width: 0;
+}
+
+.ant-table-wrapper .ant-table {
+  border-radius: 8px;
+}
+
+@media (max-width: 760px) {
+  .table-toolbar {
+    grid-template-columns: 1fr;
+  }
+}

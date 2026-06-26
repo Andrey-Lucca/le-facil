@@ -12,8 +12,13 @@ export interface ExtractedPdfResult {
   recipientName?: string
   issueDate?: string
   totalAmount?: number
+  pageCount: number
+  fileSize: number
   items: ExtractedProductItem[]
   status: ExtractionStatus
   rawText: string
+  favorite: boolean
+  deleted: boolean
   createdAt: string
+  updatedAt: string
 }

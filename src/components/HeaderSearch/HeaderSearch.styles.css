@@ -1,0 +1,34 @@
+﻿.topbar {
+  height: 64px;
+  display: flex;
+  flex: 0 0 64px;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 0 24px;
+  border-bottom: 1px solid #e8dcc8;
+  background: #ffffff;
+}
+
+.topbar-search {
+  max-width: 576px;
+  background: #f7f3ea;
+  border-color: #e8dcc8;
+}
+
+.topbar-actions {
+  position: absolute;
+  right: 24px;
+  display: flex;
+  gap: 12px;
+}
+
+@media (max-width: 760px) {
+  .topbar {
+    justify-content: flex-start;
+  }
+
+  .topbar-actions {
+    position: static;
+  }
+}

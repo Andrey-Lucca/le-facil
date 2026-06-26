@@ -1,5 +1,6 @@
 ﻿import { SearchOutlined, SettingOutlined, UserOutlined } from "@ant-design/icons"
 import { Button, Input } from "antd"
+import "./HeaderSearch.styles.css"
 
 type HeaderSearchProps = {
   searchValue: string

@@ -1,8 +1,8 @@
 ﻿import { DocumentGrid } from "../../components/DocumentGrid/DocumentGrid"
 import type { ExtractedPdfResult } from "../../modules/pdf/models/extracted-pdf-result.model"
-import "./Home.styles.css"
+import "../Home/Home.styles.css"
 
-type HomeProps = {
+type RecentProps = {
   documents: ExtractedPdfResult[]
   selectedDocumentId?: string
   onOpenDocument: (document: ExtractedPdfResult) => void
@@ -10,25 +10,25 @@ type HomeProps = {
   onTrashToggle: (document: ExtractedPdfResult) => void
 }
 
-export function Home({
+export function Recent({
   documents,
   selectedDocumentId,
   onOpenDocument,
   onFavoriteToggle,
   onTrashToggle,
-}: HomeProps) {
+}: RecentProps) {
   return (
     <div className="view-page documents-page">
       <section className="documents-page__header">
-        <h1>Documentos</h1>
-        <p>Gerencie seus PDFs salvos e abra os resultados da extração.</p>
+        <h1>Documentos Recentes</h1>
+        <p>Acesse rapidamente os PDFs lidos por Ãºltimo.</p>
       </section>
 
       <DocumentGrid
         documents={documents}
         selectedDocumentId={selectedDocumentId}
-        emptyTitle="Nenhum PDF aqui ainda."
-        emptyDescription='Use o botão "Ler PDF" para adicionar e ler um documento.'
+        emptyTitle="Nenhum PDF recente."
+        emptyDescription="Os documentos lidos aparecerÃ£o aqui."
         onOpenDocument={onOpenDocument}
         onFavoriteToggle={onFavoriteToggle}
         onTrashToggle={onTrashToggle}

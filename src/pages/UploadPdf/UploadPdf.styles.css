@@ -1,0 +1,13 @@
+﻿.upload-page__header h1 {
+  margin: 0;
+  color: #111111;
+}
+
+.upload-page__header p {
+  margin: 8px 0 0;
+  color: #5f6368;
+}
+
+.read-alert {
+  margin: 0 0 24px;
+}
