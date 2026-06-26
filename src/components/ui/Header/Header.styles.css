@@ -1,0 +1,26 @@
+.app-header {
+  height: 64px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #ffffff;
+}
+
+.app-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 180px;
+}
+
+.app-header__title {
+  margin: 0 !important;
+  white-space: nowrap;
+}
+
+.app-header__search {
+  max-width: 520px;
+  flex: 1;
+}
