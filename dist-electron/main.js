@@ -32913,6 +32913,11 @@ ipcMain.handle("documents:update", async (_event, payload) => {
   });
   return writeDocumentsStore(sortDocuments(updatedDocuments));
 });
+ipcMain.handle("documents:delete", async (_event, payload) => {
+  const documents = await readDocumentsStore();
+  const updatedDocuments = documents.filter((document2) => document2.id !== payload.documentId);
+  return writeDocumentsStore(sortDocuments(updatedDocuments));
+});
 ipcMain.handle("documents:store-path", async () => {
   return getDocumentsStorePath();
 });

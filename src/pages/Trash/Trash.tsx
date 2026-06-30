@@ -7,7 +7,8 @@ type TrashProps = {
   selectedDocumentId?: string
   onOpenDocument: (document: ExtractedPdfResult) => void
   onFavoriteToggle: (documentId: string) => void
-  onTrashToggle: (document: ExtractedPdfResult) => void
+  onRestore: (documentId: string) => void
+  onDelete: (documentId: string) => void
 }
 
 export function Trash({
@@ -15,23 +16,25 @@ export function Trash({
   selectedDocumentId,
   onOpenDocument,
   onFavoriteToggle,
-  onTrashToggle,
+  onRestore,
+  onDelete,
 }: TrashProps) {
   return (
     <div className="view-page documents-page">
       <section className="documents-page__header">
         <h1>Lixeira</h1>
-        <p>Documentos removidos ficam aqui para restauração.</p>
+        <p>Restaure documentos removidos ou exclua definitivamente.</p>
       </section>
 
       <DocumentGrid
         documents={documents}
         selectedDocumentId={selectedDocumentId}
-        emptyTitle="A lixeira está vazia."
-        emptyDescription="Documentos enviados para a lixeira aparecerão aqui."
+        emptyTitle="A lixeira esta vazia."
+        emptyDescription="Documentos enviados para a lixeira aparecerao aqui."
         onOpenDocument={onOpenDocument}
         onFavoriteToggle={onFavoriteToggle}
-        onTrashToggle={onTrashToggle}
+        onRestore={onRestore}
+        onDelete={onDelete}
       />
     </div>
   )

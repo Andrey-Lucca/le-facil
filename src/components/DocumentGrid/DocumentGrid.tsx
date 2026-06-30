@@ -19,7 +19,9 @@ type DocumentGridProps = {
   emptyDescription: string
   onOpenDocument: (document: ExtractedPdfResult) => void
   onFavoriteToggle: (documentId: string) => void
-  onTrashToggle: (document: ExtractedPdfResult) => void
+  onTrashToggle?: (document: ExtractedPdfResult) => void
+  onRestore?: (documentId: string) => void
+  onDelete?: (documentId: string) => void
 }
 
 export function DocumentGrid({
@@ -30,6 +32,8 @@ export function DocumentGrid({
   onOpenDocument,
   onFavoriteToggle,
   onTrashToggle,
+  onRestore,
+  onDelete,
 }: DocumentGridProps) {
   if (documents.length === 0) {
     return (
@@ -50,8 +54,8 @@ export function DocumentGrid({
             </span>
             <div className="reading-content">
               <strong>{document.fileName}</strong>
-              <span>{document.pageCount} pages Â· {formatFileSize(document.fileSize)}</span>
-              <small>{document.items.length} extracted items</small>
+              <span>{document.pageCount} Páginas · {formatFileSize(document.fileSize)}</span>
+              <small>{document.items.length} Itens extraidos</small>
               <Progress
                 percent={document.status === "success" ? 100 : document.status === "partial" ? 55 : 10}
                 showInfo={false}
@@ -64,19 +68,43 @@ export function DocumentGrid({
             <Tag color={statusColors[document.status]}>{document.status}</Tag>
             <Space size={4}>
               {!document.deleted ? (
+                <>
+                  <Button
+                    type="text"
+                    shape="circle"
+                    icon={document.favorite ? <StarFilled /> : <StarOutlined />}
+                    onClick={() => onFavoriteToggle(document.id)}
+                  />
+                  {onTrashToggle ? (
+                    <Button
+                      type="text"
+                      shape="circle"
+                      danger
+                      icon={<DeleteOutlined />}
+                      onClick={() => onTrashToggle(document)}
+                    />
+                  ) : null}
+                </>
+              ) : null}
+
+              {document.deleted && onRestore ? (
                 <Button
                   type="text"
                   shape="circle"
-                  icon={document.favorite ? <StarFilled /> : <StarOutlined />}
-                  onClick={() => onFavoriteToggle(document.id)}
+                  icon={<UndoOutlined />}
+                  onClick={() => onRestore(document.id)}
                 />
               ) : null}
-              <Button
-                type="text"
-                shape="circle"
-                icon={document.deleted ? <UndoOutlined /> : <DeleteOutlined />}
-                onClick={() => onTrashToggle(document)}
-              />
+
+              {document.deleted && onDelete ? (
+                <Button
+                  type="text"
+                  shape="circle"
+                  danger
+                  icon={<DeleteOutlined />}
+                  onClick={() => onDelete(document.id)}
+                />
+              ) : null}
             </Space>
           </div>
         </article>

@@ -1,4 +1,4 @@
-﻿import { App as AntApp, ConfigProvider, Skeleton } from "antd"
+﻿import { App as AntApp, ConfigProvider, Modal, Skeleton } from "antd"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { AppLayout } from "./components/Layout/AppLayout"
 import type { ExtractedPdfResult } from "./modules/pdf/models/extracted-pdf-result.model"
@@ -6,6 +6,7 @@ import { extractPdf } from "./modules/pdf/services/pdfExtractor.service"
 import {
   getDocumentsStorePath,
   loadSavedDocuments,
+  deleteDocument,
   moveDocumentToTrash,
   restoreDocumentFromTrash,
   saveDocument,
@@ -21,6 +22,11 @@ import { themeTokens } from "./shared/theme/themeTokens"
 import type { NavigationView } from "./shared/types/navigation-view.type"
 import "./App.css"
 
+type ConfirmAction =
+  | { type: "trash"; document: ExtractedPdfResult }
+  | { type: "restore"; documentId: string }
+  | { type: "delete"; documentId: string }
+
 function App() {
   const { message } = AntApp.useApp()
   const [searchValue, setSearchValue] = useState("")
@@ -30,6 +36,8 @@ function App() {
   const [storagePath, setStoragePath] = useState("")
   const [isLoadingDocuments, setIsLoadingDocuments] = useState(true)
   const [isReading, setIsReading] = useState(false)
+  const [isConfirm, setIsConfirm] = useState(false)
+  const [confirmAction, setConfirmAction] = useState<ConfirmAction>()
   const [errorMessage, setErrorMessage] = useState("")
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -160,16 +168,97 @@ function App() {
   }
 
   async function handleTrashToggle(document: ExtractedPdfResult) {
-    const updatedDocuments = document.deleted
-      ? await restoreDocumentFromTrash(document.id)
-      : await moveDocumentToTrash(document.id)
+    const updatedDocuments = await moveDocumentToTrash(document.id)
 
     setDocuments(updatedDocuments)
     refreshSelectedDocument(updatedDocuments, document.id)
 
-    if (!document.deleted && selectedResult?.id === document.id) {
+    if (selectedResult?.id === document.id) {
       setActiveView("all")
     }
+  }
+
+  async function handleRestoreDocument(documentId: string) {
+    const updatedDocuments = await restoreDocumentFromTrash(documentId)
+
+    setDocuments(updatedDocuments)
+    refreshSelectedDocument(updatedDocuments, documentId)
+    setActiveView("all")
+  }
+
+  async function handleDeleteDocument(documentId: string) {
+    const updatedDocuments = await deleteDocument(documentId)
+
+    setDocuments(updatedDocuments)
+
+    if (selectedResult?.id === documentId) {
+      setSelectedResult(updatedDocuments.find((document) => !document.deleted))
+      setActiveView("trash")
+    }
+  }
+
+  function requestTrashDocument(document: ExtractedPdfResult) {
+    setConfirmAction({ type: "trash", document })
+    setIsConfirm(true)
+  }
+
+  function requestRestoreDocument(documentId: string) {
+    setConfirmAction({ type: "restore", documentId })
+    setIsConfirm(true)
+  }
+
+  function requestDeleteDocument(documentId: string) {
+    setConfirmAction({ type: "delete", documentId })
+    setIsConfirm(true)
+  }
+
+  function closeConfirm() {
+    setIsConfirm(false)
+    setConfirmAction(undefined)
+  }
+
+  async function handleConfirmAction() {
+    if (!confirmAction) {
+      return
+    }
+
+    if (confirmAction.type === "trash") {
+      await handleTrashToggle(confirmAction.document)
+    }
+
+    if (confirmAction.type === "restore") {
+      await handleRestoreDocument(confirmAction.documentId)
+    }
+
+    if (confirmAction.type === "delete") {
+      await handleDeleteDocument(confirmAction.documentId)
+    }
+
+    closeConfirm()
+  }
+
+  function getConfirmTitle() {
+    if (confirmAction?.type === "trash") {
+      return "Mover documento para a lixeira?"
+    }
+
+    if (confirmAction?.type === "restore") {
+      return "Restaurar documento?"
+    }
+
+    return "Excluir documento definitivamente?"
+  }
+
+  function getConfirmDescription() {
+    if (confirmAction?.type === "trash") {
+      return "O documento sairá da lista principal e ficará disponível na lixeira."
+    }
+
+    if (confirmAction?.type === "restore") {
+      return "O documento voltará para a lista principal."
+    }
+
+    return "Essa ação remove o documento salvo e não poderá ser desfeita."
   }
 
   function renderPage() {
@@ -181,7 +270,7 @@ function App() {
       selectedDocumentId: selectedResult?.id,
       onOpenDocument: openDocument,
       onFavoriteToggle: (documentId: string) => void handleFavoriteToggle(documentId),
-      onTrashToggle: (document: ExtractedPdfResult) => void handleTrashToggle(document),
+      onTrashToggle: requestTrashDocument,
     }
 
     if (activeView === "upload") {
@@ -202,7 +291,7 @@ function App() {
           storagePath={storagePath}
           onUploadClick={() => setActiveView("upload")}
           onFavoriteToggle={(documentId) => void handleFavoriteToggle(documentId)}
-          onTrashToggle={(document) => void handleTrashToggle(document)}
+          onTrashToggle={requestTrashDocument}
         />
       )
     }
@@ -216,7 +305,7 @@ function App() {
     }
 
     if (activeView === "trash") {
-      return <Trash documents={visibleDocuments} {...sharedDocumentProps} />
+      return <Trash documents={visibleDocuments} {...sharedDocumentProps} onRestore={requestRestoreDocument} onDelete={requestDeleteDocument} />
     }
 
     return <Home documents={visibleDocuments} {...sharedDocumentProps} />
@@ -255,9 +344,25 @@ function App() {
           />
           {renderPage()}
         </AppLayout>
+
+        <Modal
+          open={isConfirm}
+          title={getConfirmTitle()}
+          okText="Confirmar"
+          cancelText="Cancelar"
+          okButtonProps={{ danger: confirmAction?.type === "delete" || confirmAction?.type === "trash" }}
+          onOk={() => void handleConfirmAction()}
+          onCancel={closeConfirm}
+        >
+          <p>{getConfirmDescription()}</p>
+        </Modal>
       </AntApp>
     </ConfigProvider>
   )
 }
 
 export default App
+
+
+
+

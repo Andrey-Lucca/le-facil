@@ -114,6 +114,12 @@ ipcMain.handle("documents:update", async (_event, payload: { documentId: string;
   return writeDocumentsStore(sortDocuments(updatedDocuments))
 })
 
+
+ipcMain.handle("documents:delete", async (_event, payload: { documentId: string }) => {
+  const documents = await readDocumentsStore()
+  const updatedDocuments = documents.filter((document) => document.id !== payload.documentId)
+  return writeDocumentsStore(sortDocuments(updatedDocuments))
+})
 ipcMain.handle("documents:store-path", async () => {
   return getDocumentsStorePath()
 })
@@ -159,3 +165,4 @@ app.on("activate", () => {
 app.whenReady().then(createWindow)
 
 void require
+

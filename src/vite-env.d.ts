@@ -17,6 +17,10 @@ type DocumentUpdatePayload = {
   patch: Partial<ExtractedPdfResult>
 }
 
+type DocumentDeletePayload = {
+  documentId: string
+}
+
 type IpcRendererApi = {
   on: (channel: string, listener: (event: unknown, ...args: unknown[]) => void) => void
   off: (channel: string, listener: (...args: unknown[]) => void) => void
@@ -26,6 +30,7 @@ type IpcRendererApi = {
     (channel: "documents:list"): Promise<ExtractedPdfResult[]>
     (channel: "documents:save", payload: ExtractedPdfResult): Promise<ExtractedPdfResult[]>
     (channel: "documents:update", payload: DocumentUpdatePayload): Promise<ExtractedPdfResult[]>
+    (channel: "documents:delete", payload: DocumentDeletePayload): Promise<ExtractedPdfResult[]>
     (channel: "documents:store-path"): Promise<string>
   }
 }

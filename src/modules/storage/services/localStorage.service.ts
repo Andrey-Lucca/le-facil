@@ -92,6 +92,11 @@ export async function restoreDocumentFromTrash(documentId: string): Promise<Extr
   return updateDocument(documentId, { deleted: false })
 }
 
+export async function deleteDocument(documentId: string): Promise<ExtractedPdfResult[]> {
+  const documents = await window.ipcRenderer.invoke("documents:delete", { documentId })
+  return normalizeDocuments(documents)
+}
+
 export async function getDocumentsStorePath(): Promise<string> {
   return window.ipcRenderer.invoke("documents:store-path")
 }
@@ -99,3 +104,4 @@ export async function getDocumentsStorePath(): Promise<string> {
 export function sortByUpdatedAt(firstDocument: ExtractedPdfResult, secondDocument: ExtractedPdfResult): number {
   return new Date(secondDocument.updatedAt).getTime() - new Date(firstDocument.updatedAt).getTime()
 }
+
