@@ -7,24 +7,22 @@
   UploadOutlined,
 } from "@ant-design/icons"
 import { Button } from "antd"
+import { NavLink, useLocation, useNavigate } from "react-router-dom"
 import type { ExtractedPdfResult } from "../../modules/pdf/models/extracted-pdf-result.model"
 import { themeTokens } from "../../shared/theme/themeTokens"
-import type { NavigationView } from "../../shared/types/navigation-view.type"
 import "./Sidebar.styles.css"
 
 type SidebarProps = {
   documents: ExtractedPdfResult[]
-  activeView: NavigationView
   selectedDocumentId?: string
-  onViewChange: (view: NavigationView) => void
   onDocumentSelect: (document: ExtractedPdfResult) => void
 }
 
-const viewLinks: Array<{ key: NavigationView; label: string; icon: JSX.Element }> = [
-  { key: "all", label: "Documentos", icon: <FolderOpenOutlined /> },
-  { key: "recent", label: "Recentes", icon: <ClockCircleOutlined /> },
+const viewLinks = [
+  { to: "/", label: "Documentos", icon: <FolderOpenOutlined /> },
+  { to: "/recent", label: "Recentes", icon: <ClockCircleOutlined /> },
   // { key: "favorites", label: "Favoritos", icon: <StarOutlined /> },
-  { key: "trash", label: "Lixeira", icon: <DeleteOutlined /> },
+  { to: "/trash", label: "Lixeira", icon: <DeleteOutlined /> },
 ]
 
 const dotColors = [
@@ -52,11 +50,11 @@ function formatRelativeDate(value: string): string {
 
 export function Sidebar({
   documents,
-  activeView,
   selectedDocumentId,
-  onViewChange,
   onDocumentSelect,
 }: SidebarProps) {
+  const location = useLocation()
+  const navigate = useNavigate()
   const visibleRecentDocuments = documents.filter((document) => !document.deleted).slice(0, 5)
 
   return (
@@ -70,21 +68,21 @@ export function Sidebar({
         <Button
           type="primary"
           icon={<UploadOutlined />}
-          className={`sidebar-upload ${activeView === "upload" ? "active" : ""}`}
-          onClick={() => onViewChange("upload")}
+          className={`sidebar-upload ${location.pathname === "/upload" ? "active" : ""}`}
+          onClick={() => navigate("/upload")}
         >
           Upload PDF
         </Button>
 
         {viewLinks.map((link) => (
-          <button
-            className={`sidebar-link ${activeView === link.key ? "active" : ""}`}
-            type="button"
-            key={link.key}
-            onClick={() => onViewChange(link.key)}
+          <NavLink
+            className={({ isActive }) => `sidebar-link ${isActive ? "active" : ""}`}
+            key={link.to}
+            to={link.to}
+            end={link.to === "/"}
           >
             {link.icon} {link.label}
-          </button>
+          </NavLink>
         ))}
       </nav>
 

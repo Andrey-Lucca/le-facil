@@ -30,3 +30,16 @@ button,
 input {
   font: inherit;
 }
+
+.sidebar-link,
+.sidebar-link:visited {
+  color: #111111;
+}
+
+.sidebar-link:hover,
+.sidebar-link:focus,
+.sidebar-link.active {
+  color: #111111;
+  background: #f4eee2;
+  text-decoration: none;
+}

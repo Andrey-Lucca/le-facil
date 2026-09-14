@@ -1,5 +1,12 @@
 ﻿import { App as AntApp, ConfigProvider, Modal, Skeleton } from "antd"
 import { useEffect, useMemo, useRef, useState } from "react"
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom"
 import { AppLayout } from "./components/Layout/AppLayout"
 import type { ExtractedPdfResult } from "./modules/pdf/models/extracted-pdf-result.model"
 import { extractPdf } from "./modules/pdf/services/pdfExtractor.service"
@@ -19,8 +26,8 @@ import { Recent } from "./pages/Recent/Recent"
 import { Trash } from "./pages/Trash/Trash"
 import { UploadPdf } from "./pages/UploadPdf/UploadPdf"
 import { themeTokens } from "./shared/theme/themeTokens"
-import type { NavigationView } from "./shared/types/navigation-view.type"
 import "./App.css"
+import { Config } from "./pages/Configs"
 
 type ConfirmAction =
   | { type: "trash"; document: ExtractedPdfResult }
@@ -29,8 +36,9 @@ type ConfirmAction =
 
 function App() {
   const { message } = AntApp.useApp()
+  const location = useLocation()
+  const navigate = useNavigate()
   const [searchValue, setSearchValue] = useState("")
-  const [activeView, setActiveView] = useState<NavigationView>("all")
   const [documents, setDocuments] = useState<ExtractedPdfResult[]>([])
   const [selectedResult, setSelectedResult] = useState<ExtractedPdfResult>()
   const [storagePath, setStoragePath] = useState("")
@@ -59,7 +67,10 @@ function App() {
         setSelectedResult(savedDocuments.find((document) => !document.deleted))
         setStoragePath(documentsStorePath)
       } catch (error) {
-        const safeMessage = error instanceof Error ? error.message : "Could not load saved documents"
+        const safeMessage =
+          error instanceof Error
+            ? error.message
+            : "Could not load saved documents"
         setErrorMessage(safeMessage)
       } finally {
         if (isMounted) {
@@ -77,7 +88,7 @@ function App() {
 
   const visibleDocuments = useMemo(() => {
     const byView = documents.filter((document) => {
-      if (activeView === "trash") {
+      if (location.pathname === "/trash") {
         return document.deleted
       }
 
@@ -85,7 +96,7 @@ function App() {
         return false
       }
 
-      if (activeView === "favorites") {
+      if (location.pathname === "/favorites") {
         return document.favorite
       }
 
@@ -106,17 +117,24 @@ function App() {
 
       return searchableText.includes(searchValue.toLowerCase())
     })
-  }, [activeView, documents, searchValue])
+  }, [documents, location.pathname, searchValue])
 
   function openDocument(document: ExtractedPdfResult) {
     setSelectedResult(document)
-    setActiveView("results")
+    navigate("/results")
   }
 
-  function refreshSelectedDocument(updatedDocuments: ExtractedPdfResult[], documentId?: string) {
+  function refreshSelectedDocument(
+    updatedDocuments: ExtractedPdfResult[],
+    documentId?: string,
+  ) {
     const currentDocumentId = documentId ?? selectedResult?.id
-    const updatedSelectedDocument = updatedDocuments.find((document) => document.id === currentDocumentId)
-    setSelectedResult(updatedSelectedDocument?.deleted ? undefined : updatedSelectedDocument)
+    const updatedSelectedDocument = updatedDocuments.find(
+      (document) => document.id === currentDocumentId,
+    )
+    setSelectedResult(
+      updatedSelectedDocument?.deleted ? undefined : updatedSelectedDocument,
+    )
   }
 
   async function handleFileSelected(file: File) {
@@ -133,17 +151,20 @@ function App() {
       const updatedDocuments = await saveDocument(result)
       setDocuments(updatedDocuments)
       setSelectedResult(result)
-      setActiveView("results")
+      navigate("/results")
 
       if (result.status === "success") {
         message.success(`PDF read: ${result.items.length} product items found`)
       } else if (result.status === "partial") {
-        message.warning("PDF read partially. Text was extracted, but product rows need review.")
+        message.warning(
+          "PDF read partially. Text was extracted, but product rows need review.",
+        )
       } else {
         message.error("PDF text could not be extracted.")
       }
     } catch (error) {
-      const safeMessage = error instanceof Error ? error.message : "Could not read this PDF"
+      const safeMessage =
+        error instanceof Error ? error.message : "Could not read this PDF"
       setErrorMessage(safeMessage)
       message.error("PDF reading failed")
     } finally {
@@ -174,7 +195,7 @@ function App() {
     refreshSelectedDocument(updatedDocuments, document.id)
 
     if (selectedResult?.id === document.id) {
-      setActiveView("all")
+      navigate("/")
     }
   }
 
@@ -183,7 +204,7 @@ function App() {
 
     setDocuments(updatedDocuments)
     refreshSelectedDocument(updatedDocuments, documentId)
-    setActiveView("all")
+    navigate("/")
   }
 
   async function handleDeleteDocument(documentId: string) {
@@ -193,7 +214,7 @@ function App() {
 
     if (selectedResult?.id === documentId) {
       setSelectedResult(updatedDocuments.find((document) => !document.deleted))
-      setActiveView("trash")
+      navigate("/trash")
     }
   }
 
@@ -261,54 +282,75 @@ function App() {
     return "Essa ação remove o documento salvo e não poderá ser desfeita."
   }
 
-  function renderPage() {
-    if (isLoadingDocuments) {
-      return <Skeleton active paragraph={{ rows: 6 }} />
-    }
-
+  function renderRoutes() {
     const sharedDocumentProps = {
       selectedDocumentId: selectedResult?.id,
       onOpenDocument: openDocument,
-      onFavoriteToggle: (documentId: string) => void handleFavoriteToggle(documentId),
+      onFavoriteToggle: (documentId: string) =>
+        void handleFavoriteToggle(documentId),
       onTrashToggle: requestTrashDocument,
     }
 
-    if (activeView === "upload") {
-      return (
-        <UploadPdf
-          documents={documents}
-          errorMessage={errorMessage}
-          isReading={isReading}
-          onFileSelected={handleFileSelected}
+    return (
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Home documents={visibleDocuments} {...sharedDocumentProps} />
+          }
         />
-      )
-    }
-
-    if (activeView === "results") {
-      return (
-        <ExtractionResult
-          result={selectedResult}
-          storagePath={storagePath}
-          onUploadClick={() => setActiveView("upload")}
-          onFavoriteToggle={(documentId) => void handleFavoriteToggle(documentId)}
-          onTrashToggle={requestTrashDocument}
+        <Route
+          path="/recent"
+          element={
+            <Recent documents={visibleDocuments} {...sharedDocumentProps} />
+          }
         />
-      )
-    }
-
-    if (activeView === "recent") {
-      return <Recent documents={visibleDocuments} {...sharedDocumentProps} />
-    }
-
-    if (activeView === "favorites") {
-      return <Favorites documents={visibleDocuments} {...sharedDocumentProps} />
-    }
-
-    if (activeView === "trash") {
-      return <Trash documents={visibleDocuments} {...sharedDocumentProps} onRestore={requestRestoreDocument} onDelete={requestDeleteDocument} />
-    }
-
-    return <Home documents={visibleDocuments} {...sharedDocumentProps} />
+        <Route
+          path="/favorites"
+          element={
+            <Favorites documents={visibleDocuments} {...sharedDocumentProps} />
+          }
+        />
+        <Route
+          path="/trash"
+          element={
+            <Trash
+              documents={visibleDocuments}
+              {...sharedDocumentProps}
+              onRestore={requestRestoreDocument}
+              onDelete={requestDeleteDocument}
+            />
+          }
+        />
+        <Route
+          path="/upload"
+          element={
+            <UploadPdf
+              documents={documents}
+              errorMessage={errorMessage}
+              isReading={isReading}
+              onFileSelected={handleFileSelected}
+            />
+          }
+        />
+        <Route
+          path="/results"
+          element={
+            <ExtractionResult
+              result={selectedResult}
+              storagePath={storagePath}
+              onUploadClick={() => navigate("/upload")}
+              onFavoriteToggle={(documentId) =>
+                void handleFavoriteToggle(documentId)
+              }
+              onTrashToggle={requestTrashDocument}
+            />
+          }
+        />
+        <Route path="/config" element={<Config />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    )
   }
 
   return (
@@ -321,7 +363,8 @@ function App() {
           colorTextSecondary: themeTokens.textSecondary,
           colorBorder: themeTokens.border,
           borderRadius: 8,
-          fontFamily: "Inter, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
+          fontFamily:
+            "Inter, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
         },
       }}
     >
@@ -329,10 +372,8 @@ function App() {
         <AppLayout
           searchValue={searchValue}
           documents={documents}
-          activeView={activeView}
           selectedDocumentId={selectedResult?.id}
           onSearchChange={setSearchValue}
-          onViewChange={setActiveView}
           onDocumentSelect={openDocument}
         >
           <input
@@ -342,7 +383,11 @@ function App() {
             accept=".pdf,application/pdf"
             onChange={handleNativeInputChange}
           />
-          {renderPage()}
+          {isLoadingDocuments ? (
+            <Skeleton active paragraph={{ rows: 6 }} />
+          ) : (
+            renderRoutes()
+          )}
         </AppLayout>
 
         <Modal
@@ -350,7 +395,11 @@ function App() {
           title={getConfirmTitle()}
           okText="Confirmar"
           cancelText="Cancelar"
-          okButtonProps={{ danger: confirmAction?.type === "delete" || confirmAction?.type === "trash" }}
+          okButtonProps={{
+            danger:
+              confirmAction?.type === "delete" ||
+              confirmAction?.type === "trash",
+          }}
           onOk={() => void handleConfirmAction()}
           onCancel={closeConfirm}
         >
@@ -362,7 +411,3 @@ function App() {
 }
 
 export default App
-
-
-
-

@@ -1,6 +1,7 @@
 ﻿import { SearchOutlined, SettingOutlined, UserOutlined } from "@ant-design/icons"
 import { Button, Input } from "antd"
 import "./HeaderSearch.styles.css"
+import { useNavigate } from "react-router-dom"
 
 type HeaderSearchProps = {
   searchValue: string
@@ -8,6 +9,9 @@ type HeaderSearchProps = {
 }
 
 export function HeaderSearch({ searchValue, onSearchChange }: HeaderSearchProps) {
+
+  const navigate = useNavigate();
+
   return (
     <header className="topbar">
       <Input
@@ -20,7 +24,7 @@ export function HeaderSearch({ searchValue, onSearchChange }: HeaderSearchProps)
         allowClear
       />
       <div className="topbar-actions">
-        <Button type="text" shape="circle" icon={<SettingOutlined />} />
+        <Button type="text" shape="circle" icon={<SettingOutlined />} onClick={() => navigate("/config")}/>
         <Button type="text" shape="circle" icon={<UserOutlined />} />
       </div>
     </header>

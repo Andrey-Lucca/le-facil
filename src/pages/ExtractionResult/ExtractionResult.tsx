@@ -1,12 +1,7 @@
-﻿import {
-  DeleteOutlined,
-  StarFilled,
-  StarOutlined,
-} from "@ant-design/icons"
-import { Button, Descriptions, Empty, Space, Tag } from "antd"
+﻿import { DeleteOutlined } from "@ant-design/icons"
+import { Button, Descriptions, Empty, Space } from "antd"
 import { ExtractionTable } from "../../components/ExtractionTable/ExtractionTable"
 import type { ExtractedPdfResult } from "../../modules/pdf/models/extracted-pdf-result.model"
-import { statusColors } from "../../shared/constants/statusColors"
 import { formatFileSize } from "../../shared/utils/formatFileSize"
 import "./ExtractionResult.styles.css"
 
@@ -22,7 +17,6 @@ export function ExtractionResult({
   result,
   storagePath,
   onUploadClick,
-  onFavoriteToggle,
   onTrashToggle,
 }: ExtractionResultProps) {
   if (!result) {
@@ -45,12 +39,12 @@ export function ExtractionResult({
             <p>{result.items.length} itens extraídos</p>
           </div>
           <Space>
-            <Tag color={statusColors[result.status]}>{result.status}</Tag>
+            <Button type="primary">Buscar preços</Button>
             <Button
-              icon={result.favorite ? <StarFilled /> : <StarOutlined />}
-              onClick={() => onFavoriteToggle(result.id)}
+              danger
+              icon={<DeleteOutlined />}
+              onClick={() => onTrashToggle(result)}
             />
-            <Button danger icon={<DeleteOutlined />} onClick={() => onTrashToggle(result)} />
           </Space>
         </div>
         <ExtractionTable result={result} />
@@ -59,12 +53,28 @@ export function ExtractionResult({
       <aside className="documents-panel document-details-panel">
         <h2 className="section-title">Detalhes do documento</h2>
         <Descriptions column={1} size="small">
-          <Descriptions.Item label="Tipo">{result.documentType}</Descriptions.Item>
-          <Descriptions.Item label="Páginas">{result.pageCount}</Descriptions.Item>
-          <Descriptions.Item label="Tamanho do arquivo">{formatFileSize(result.fileSize)}</Descriptions.Item>
-          <Descriptions.Item label="Produtos">{result.items.length}</Descriptions.Item>
-          {result.issueDate ? <Descriptions.Item label="Data de emissão">{result.issueDate}</Descriptions.Item> : null}
-          {result.accessKey ? <Descriptions.Item label="Chave de acesso">{result.accessKey}</Descriptions.Item> : null}
+          <Descriptions.Item label="Tipo">
+            {result.documentType}
+          </Descriptions.Item>
+          <Descriptions.Item label="Páginas">
+            {result.pageCount}
+          </Descriptions.Item>
+          <Descriptions.Item label="Tamanho do arquivo">
+            {formatFileSize(result.fileSize)}
+          </Descriptions.Item>
+          <Descriptions.Item label="Produtos">
+            {result.items.length}
+          </Descriptions.Item>
+          {result.issueDate ? (
+            <Descriptions.Item label="Data de emissão">
+              {result.issueDate}
+            </Descriptions.Item>
+          ) : null}
+          {result.accessKey ? (
+            <Descriptions.Item label="Chave de acesso">
+              {result.accessKey}
+            </Descriptions.Item>
+          ) : null}
         </Descriptions>
         <div className="storage-note">
           <strong>Salvo em</strong>
