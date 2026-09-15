@@ -18,7 +18,7 @@ var __privateWrapper = (obj, member, setter, getter) => ({
   }
 });
 var _Util_static, getExtremumOnCurve_fn, getExtremum_fn, _regex, _toolbar, _colorPicker, _editor, _buttons, _altText, _comment, _commentButtonDivider, _signatureDescriptionButton, _l10nRemove, _EditorToolbar_static, pointerDown_fn, _EditorToolbar_instances, focusIn_fn, focusOut_fn, addListenersToElement_fn, divider_get, _buttons2, _toolbar2, _uiManager, _FloatingToolbar_instances, render_fn, getLastPoint_fn, makeButton_fn, _id, _baseId, _id2, _cache, _ImageManager_instances, get_fn, _commands, _locked, _maxSize, _position, _KeyboardManager_instances, serialize_fn, _abortController, _activeEditor, _allEditableAnnotations, _allEditors, _allLayers, _altTextManager, _annotationStorage, _changedExistingAnnotations, _commandManager, _commentManager, _copyPasteAC, _currentDrawingSession, _currentPageIndex, _deletedAnnotationsElementIds, _draggingEditors, _editorTypes, _editorsToRescale, _enableHighlightFloatingButton, _enableUpdatedAddImage, _enableNewAltTextWhenAddingImage, _filterFactory, _focusMainContainerTimeoutId, _focusManagerAC, _highlightColors, _highlightWhenShiftUp, _floatingToolbar, _idManager, _isEnabled, _isPointerDown, _isWaiting, _keyboardManagerAC, _lastActiveElement, _mainHighlightColorPicker, _missingCanvases, _mlManager, _mode, _selectedEditors, _selectedTextNode, _signatureManager, _pageColors, _showAllStates, _pdfDocument, _previousStates, _translation, _translationTimeoutId, _container, _viewer, _viewerAlert, _updateModeCapability, _AnnotationEditorUIManager_instances, getAnchorElementForSelection_fn, getLayerForTextLayer_fn, displayFloatingToolbar_fn, selectionChange_fn, onSelectEnd_fn, addSelectionListener_fn, addFocusManager_fn, removeFocusManager_fn, addKeyboardManager_fn, removeKeyboardManager_fn, addCopyPasteListeners_fn, removeCopyPasteListeners_fn, addDragAndDropListeners_fn, dispatchUpdateStates_fn, dispatchUpdateUI_fn, enableAll_fn, disableAll_fn, addEditorToLayer_fn, lastSelectedEditor_get, isEmpty_fn, selectEditors_fn, _altText2, _altTextDecorative, _altTextButton, _altTextButtonLabel, _altTextTooltip, _altTextTooltipTimeout, _altTextWasFromKeyBoard, _badge, _editor2, _guessedText, _textWithDisclaimer, _useNewAltTextFlow, _l10nNewButton, _AltText_instances, label_get, setState_fn, _commentStandaloneButton, _commentToolbarButton, _commentWasFromKeyBoard, _editor3, _initialText, _richText, _text, _date, _deleted, _popupPosition, _Comment_instances, render_fn2, _container2, _isPinching, _isPinchingStopped, _isPinchingDisabled, _onPinchStart, _onPinching, _onPinchEnd, _pointerDownAC, _signal, _touchInfo, _touchManagerAC, _touchMoveAC, _TouchManager_instances, onTouchStart_fn, onTouchMove_fn, onTouchEnd_fn, _accessibilityData, _allResizerDivs, _altText3, _comment2, _commentStandaloneButton2, _disabled, _dragPointerId, _dragPointerType, _resizersDiv, _lastPointerCoords, _savedDimensions, _fakeAnnotation, _focusAC, _focusedResizerName, _hasBeenClicked, _initialRect, _isEditing, _isInEditMode, _isResizerEnabledForKeyboard, _moveInDOMTimeout, _prevDragX, _prevDragY, _telemetryTimeouts, _touchManager, _isDraggable, _zIndex, _AnnotationEditor_instances, translate_fn, _AnnotationEditor_static, rotatePoint_fn, getRotationMatrix_fn, createResizers_fn, resizerPointerdown_fn, resize_fn, addResizeToUndoStack_fn, resizerPointermove_fn, touchPinchStartCallback_fn, touchPinchCallback_fn, touchPinchEndCallback_fn, selectOnPointerEvent_fn, setUpDragSession_fn, addFocusListeners_fn, resizerKeydown_fn, resizerBlur_fn, resizerFocus_fn, setResizerTabIndex_fn, stopResizing_fn, _modified, _modifiedIds, _editorsMap, _storage, _AnnotationStorage_instances, setModified_fn, _serializable, _systemFonts, _fontData, _listeners, _deferred, _messageAC, _MessageHandler_instances, onMessage_fn, createStreamSink_fn, processStreamMessage_fn, deleteStreamController_fn, _enableHWA, _baseUrl, __cache, __defs, _docId, _document, __hcmCache, _id3, _DOMFilterFactory_instances, cache_get, hcmCache_get, defs_get, createTables_fn, createUrl_fn, addLuminosityConversion_fn, addGrayConversion_fn, createFilter_fn, appendFeFunc_fn, addTransferMapConversion_fn, addTransferMapAlphaConversion_fn, getRGB_fn, _a, _bboxes, _coords, _simple, _incremental, _namedDependencies, _savesStack, _markedContentStack, _baseTransformStack, _clipBox, _pendingBBox, _pendingBBoxIdx, _pendingDependencies, _operations, _fontBBoxTrustworthy, _canvasWidth, _canvasHeight, _bboxesCoords, _bboxes2, _debugMetadata, _CanvasDependencyTracker_instances, initializeBBoxes_fn, _dependencyTracker, _opIdx, _ignoreBBoxes, _nestingLevel, _savesLevel, _CanvasGraphics_instances, restoreInitialState_fn, drawFilter_fn, getScaledPath_fn, _buffer, _view, _decoder, _CssFontInfo_instances, readString_fn, _buffer2, _view2, _decoder2, _SystemFontInfo_instances, readString_fn2, _OFFSET_NUMBERS, _OFFSET_BBOX, _OFFSET_FONT_MATRIX, _OFFSET_DEFAULT_VMETRICS, _OFFSET_STRINGS, _buffer3, _decoder3, _view3, _FontInfo_instances, readBoolean_fn, readNumber_fn, readString_fn3, _port, _src, _map, _data, _isDisplay, _isPrint, _userSet, _visible, _cachedGetHash, _groups, _initialHash, _order, _OptionalContentConfig_instances, evaluateVisibilityExpression_fn, _objs, _PDFObjects_instances, ensureObj_fn, _b, _capability, _container3, _disableProcessItems, _fontInspectorEnabled, _lang, _layoutTextParams, _pageHeight, _pageWidth, _reader, _rootContainer, _rotation, _scale, _styleCache, _textContentItemsStr, _textContentSource, _textDivs, _textDivProperties, _transform, _ascentCache, _canvasContexts, _canvasCtxFonts, _minFontSize, _pendingTextLayers, _TextLayer_instances, processItems_fn, appendText_fn, layout_fn, _TextLayer_static, getCtx_fn, ensureCtxFont_fn, ensureMinFontSizeComputed_fn, getAscent_fn, _docId2, _capability2, _progressiveDoneListeners, _progressiveReadListeners, _progressListeners, _rangeListeners, _pendingCleanup, _PDFPageProxy_instances, tryCleanup_fn, _capability3, _messageHandler, _port2, _webWorker, _fakeWorkerId, _isWorkerDisabled, _workerPorts, _PDFWorker_instances, resolve_fn, initializeFromPort_fn, initialize_fn, setupFakeWorker_fn, _PDFWorker_static, mainThreadWorkerMessageHandler_get, _methodPromises, _pageCache, _pagePromises, _pageRefCache, _passwordCapability, _WorkerTransport_instances, cacheSimpleMethod_fn, _internalRenderTask, _rAF, _canvasInUse, _button, _buttonSwatch, _defaultColor, _dropdown, _dropdownWasFromKeyboard, _isMainColorPicker, _editor4, _eventBus, _openDropdownAC, _uiManager2, _l10nColor, _ColorPicker_instances, getDropdownRoot_fn, colorSelect_fn, keyDown_fn, openDropdown_fn, pointerDown_fn2, isDropdownVisible_get, _input, _editor5, _uiManager3, _l10nColor2, _updates, _hasBorder, _popupElement, _AnnotationElement_instances, setRectEdited_fn, _LinkAnnotationElement_instances, setInternalLink_fn, bindAttachment_fn, bindSetOCGState_fn, _PopupAnnotationElement_instances, createPopup_fn, _commentManager2, _boundKeyDown, _boundHide, _boundShow, _boundToggle, _color, _container4, _contentsObj, _dateObj, _elements, _parent, _parentRect, _pinned, _popup, _popupAbortController, _position2, _commentButton, _commentButtonPosition, _popupPosition2, _rect, _richText2, _titleObj, _updates2, _wasVisible, _firstElement, _commentText, _PopupElement_instances, addEventListeners_fn, setCommentButtonPosition_fn, updateCommentButtonPosition_fn, updateColor_fn, html_get, fontSize_get, fontColor_get, makePopupContent_fn, keyDown_fn2, setPosition_fn, toggle_fn, show_fn, hide_fn, _line, _square, _circle, _polyline, _polylinesGroupElement, _polylines, _InkAnnotationElement_instances, getTransform_fn, _trigger, _FileAttachmentAnnotationElement_instances, download_fn, _accessibilityManager, _annotationCanvasMap, _annotationStorage2, _editableAnnotations, _structTreeLayer, _linkService, _AnnotationLayer_instances, appendElement_fn, setAnnotationCanvasMap_fn, _content, _editorDivId, _editModeAC, _fontSize, _FreeTextEditor_instances, updateFontSize_fn, updateColor_fn2, extractText_fn, setEditorDimensions_fn, _FreeTextEditor_static, getNodeContent_fn, setContent_fn, serializeContent_fn, deserializeContent_fn, hasElementChanged_fn, _box, _bottom, _innerMargin, _isLTR, _top, _last, _lastX, _lastY, _min, _min_dist, _scaleFactor, _thickness, _points, _MIN_DIST, _MIN_DIFF, _MIN, _FreeDrawOutliner_instances, getLastCoords_fn, toSVGPathTwoPoints_fn, toSVGPathStart_fn, toSVGPathEnd_fn, getOutlineTwoPoints_fn, getOutlineStart_fn, getOutlineEnd_fn, _box2, _bbox, _innerMargin2, _isLTR2, _points2, _scaleFactor2, _outline, _FreeDrawOutline_instances, computeMinMax_fn, _box3, _firstPoint, _lastPoint, _verticalEdges, _intervals, _HighlightOutliner_instances, getOutlines_fn, binarySearch_fn, insert_fn, remove_fn, breakEdge_fn, _box4, _outlines, _anchorNode, _anchorOffset, _boxes, _clipPathId, _colorPicker2, _focusOutlines, _focusNode, _focusOffset, _highlightDiv, _highlightOutlines, _id4, _isFreeHighlight, _firstPoint2, _lastPoint2, _outlineId, _text2, _thickness2, _methodOfCreation, _HighlightEditor_instances, createOutlines_fn, createFreeOutlines_fn, updateColor_fn3, updateThickness_fn, changeThickness_fn, cleanDrawLayer_fn, addToDrawLayer_fn, _HighlightEditor_static, rotateBbox_fn, keydown_fn, setCaret_fn, getRotation_fn, serializeBoxes_fn, serializeOutlines_fn, highlightMove_fn, endHighlight_fn, hasElementChanged_fn2, _svgProperties, _drawOutlines, _mustBeCommitted, _currentDraw, _currentDrawingAC, _currentDrawingOptions, _currentPointerId, _currentPointerType, _currentPointerIds, _currentMoveTimestamp, _DrawingEditor_instances, createDrawOutlines_fn, createDrawing_fn, cleanDrawLayer_fn2, addToDrawLayer_fn2, convertToParentSpace_fn, convertToDrawSpace_fn, updateBbox_fn, rotateBox_fn, _last2, _line2, _lines, _rotation2, _thickness3, _points3, _lastSVGPath, _lastIndex, _outlines2, _parentWidth, _parentHeight, _InkDrawOutliner_instances, normalizePoint_fn, _bbox2, _currentRotation, _innerMargin3, _lines2, _parentWidth2, _parentHeight2, _parentScale, _rotation3, _thickness4, _InkDrawOutline_instances, getMarginComponents_fn, getBBoxWithNoMargin_fn, computeBbox_fn, updateThickness_fn2, _InkEditor_instances, hasElementChanged_fn3, _PARAMETERS, _SignatureExtractor_static, neighborIndexToId_fn, _neighborIdToIndex, clockwiseNonZero_fn, counterClockwiseNonZero_fn, findContours_fn, douglasPeuckerHelper_fn, douglasPeucker_fn, bilateralFilter_fn, getHistogram_fn, toUint8_fn, guessThreshold_fn, getGrayPixels_fn, _isExtracted, _description, _signatureData, _signatureUUID, _bitmap, _bitmapId, _bitmapPromise, _bitmapUrl, _bitmapFile, _bitmapFileName, _canvas, _missingCanvas, _resizeTimeoutId, _isSvg, _hasBeenAddedInUndoStack, _StampEditor_instances, getBitmapFetched_fn, getBitmapDone_fn, getBitmap_fn, createCanvas_fn, scaleBitmap_fn, drawBitmap_fn, serializeBitmap_fn, hasElementChanged_fn4, _accessibilityManager2, _allowClick, _annotationLayer, _clickAC, _editorFocusTimeoutId, _editors, _hadPointerDown, _isDisabling, _isEnabling, _drawingAC, _focusedElement, _textLayer, _textSelectionAC, _textLayerDblClickAC, _lastPointerDownTimestamp, _uiManager4, _editorTypes2, _AnnotationEditorLayer_instances, allEditorsIterator_get, textLayerPointerDown_fn, currentEditorType_get, createNewEditor_fn, getCenterPoint_fn, cleanup_fn, _parent2, _mapping, _toUpdate, _id5, _DrawLayer_static, setBox_fn, _DrawLayer_instances, createSVG_fn, createClipPath_fn, updateProperties_fn;
-import { ipcMain, app, BrowserWindow } from "electron";
+import { app, ipcMain, BrowserWindow } from "electron";
 import { createRequire } from "node:module";
 import { readFile, mkdir, writeFile } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -32834,6 +32834,64 @@ ${pageNumber}
     }
   }
 }
+const defaultSettings = {
+  scriptPath: "",
+  exportFolder: ""
+};
+function getSettingsStorePath() {
+  return path.join(app.getPath("userData"), "settings.json");
+}
+async function readSettingsStore() {
+  try {
+    const content = await readFile(getSettingsStorePath(), "utf-8");
+    const parsedSettings = JSON.parse(content);
+    return {
+      scriptPath: parsedSettings.scriptPath ?? "",
+      exportFolder: parsedSettings.exportFolder ?? ""
+    };
+  } catch (error) {
+    return {
+      scriptPath: "",
+      exportFolder: ""
+    };
+  }
+}
+async function saveSettings(settings) {
+  const storePath = getSettingsStorePath();
+  await mkdir(path.dirname(storePath), { recursive: true });
+  await writeFile(storePath, JSON.stringify(settings, null, 2), "utf-8");
+  return settings;
+}
+async function updateSettings(patch) {
+  const currentSettings = await readSettingsStore();
+  return saveSettings({
+    ...currentSettings,
+    ...patch
+  });
+}
+async function deleteSettings() {
+  return saveSettings(defaultSettings);
+}
+function registerSettingsHandlers() {
+  ipcMain.handle("settings:get", () => {
+    return readSettingsStore();
+  });
+  ipcMain.handle(
+    "settings:save",
+    (_event, settings) => {
+      return saveSettings(settings);
+    }
+  );
+  ipcMain.handle(
+    "settings:update",
+    (_event, patch) => {
+      return updateSettings(patch);
+    }
+  );
+  ipcMain.handle("settings:delete", () => {
+    return deleteSettings();
+  });
+}
 const require$1 = createRequire(import.meta.url);
 const __dirname$1 = path.dirname(fileURLToPath(import.meta.url));
 process.env.APP_ROOT = path.join(__dirname$1, "..");
@@ -32867,27 +32925,34 @@ function sortDocuments(documents) {
     return new Date(secondDocument.updatedAt).getTime() - new Date(firstDocument.updatedAt).getTime();
   });
 }
-ipcMain.handle("pdf:extract-text", async (_event, payload) => {
-  const parser = new PDFParse({ data: Buffer.from(payload.data) });
-  try {
-    const result = await parser.getText();
-    return {
-      text: result.text,
-      pages: result.total
-    };
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown PDF parsing error";
-    throw new Error(`Could not extract text from ${payload.fileName}: ${message}`);
-  } finally {
-    await parser.destroy();
+ipcMain.handle(
+  "pdf:extract-text",
+  async (_event, payload) => {
+    const parser = new PDFParse({ data: Buffer.from(payload.data) });
+    try {
+      const result = await parser.getText();
+      return {
+        text: result.text,
+        pages: result.total
+      };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown PDF parsing error";
+      throw new Error(
+        `Could not extract text from ${payload.fileName}: ${message}`
+      );
+    } finally {
+      await parser.destroy();
+    }
   }
-});
+);
 ipcMain.handle("documents:list", async () => {
   return sortDocuments(await readDocumentsStore());
 });
 ipcMain.handle("documents:save", async (_event, document2) => {
   const documents = await readDocumentsStore();
-  const existingIndex = documents.findIndex((storedDocument) => storedDocument.id === document2.id);
+  const existingIndex = documents.findIndex(
+    (storedDocument) => storedDocument.id === document2.id
+  );
   const documentToSave = {
     ...document2,
     updatedAt: (/* @__PURE__ */ new Date()).toISOString()
@@ -32899,25 +32964,33 @@ ipcMain.handle("documents:save", async (_event, document2) => {
   }
   return writeDocumentsStore(sortDocuments(documents));
 });
-ipcMain.handle("documents:update", async (_event, payload) => {
-  const documents = await readDocumentsStore();
-  const updatedDocuments = documents.map((document2) => {
-    if (document2.id !== payload.documentId) {
-      return document2;
-    }
-    return {
-      ...document2,
-      ...payload.patch,
-      updatedAt: (/* @__PURE__ */ new Date()).toISOString()
-    };
-  });
-  return writeDocumentsStore(sortDocuments(updatedDocuments));
-});
-ipcMain.handle("documents:delete", async (_event, payload) => {
-  const documents = await readDocumentsStore();
-  const updatedDocuments = documents.filter((document2) => document2.id !== payload.documentId);
-  return writeDocumentsStore(sortDocuments(updatedDocuments));
-});
+ipcMain.handle(
+  "documents:update",
+  async (_event, payload) => {
+    const documents = await readDocumentsStore();
+    const updatedDocuments = documents.map((document2) => {
+      if (document2.id !== payload.documentId) {
+        return document2;
+      }
+      return {
+        ...document2,
+        ...payload.patch,
+        updatedAt: (/* @__PURE__ */ new Date()).toISOString()
+      };
+    });
+    return writeDocumentsStore(sortDocuments(updatedDocuments));
+  }
+);
+ipcMain.handle(
+  "documents:delete",
+  async (_event, payload) => {
+    const documents = await readDocumentsStore();
+    const updatedDocuments = documents.filter(
+      (document2) => document2.id !== payload.documentId
+    );
+    return writeDocumentsStore(sortDocuments(updatedDocuments));
+  }
+);
 ipcMain.handle("documents:store-path", async () => {
   return getDocumentsStorePath();
 });
@@ -32954,7 +33027,10 @@ app.on("activate", () => {
     createWindow();
   }
 });
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  registerSettingsHandlers();
+  createWindow();
+});
 export {
   MAIN_DIST,
   RENDERER_DIST,
