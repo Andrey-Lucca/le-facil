@@ -23,6 +23,7 @@ import { createRequire } from "node:module";
 import { readFile, mkdir, writeFile } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import path from "node:path";
+import { spawn } from "node:child_process";
 var __webpack_modules__ = {
   /***/
   34: (
@@ -32892,6 +32893,34 @@ function registerSettingsHandlers() {
     return deleteSettings();
   });
 }
+async function registerSearchEngineHandlers() {
+  const documentsPath = getDocumentsStorePath();
+  ipcMain.handle("search-engine:run", async (_event, id) => {
+    const PATHS = await readSettingsStore();
+    return new Promise((resolve) => {
+      var _a2, _b2;
+      const process2 = spawn("node", [PATHS.scriptPath, id, PATHS.exportFolder, documentsPath]);
+      (_a2 = process2.stdout) == null ? void 0 : _a2.on("data", (data) => {
+        console.log("Saída do script:", data.toString());
+      });
+      let errorMessage = "";
+      process2.on("error", (error) => {
+        resolve({ success: false, message: error.message });
+      });
+      (_b2 = process2.stderr) == null ? void 0 : _b2.on("data", (data) => {
+        errorMessage += data.toString();
+      });
+      process2.on("close", (code) => {
+        resolve(
+          code === 0 ? { success: true, message: "Automação concluída com sucesso" } : {
+            success: false,
+            message: errorMessage.trim() || "Erro ao executar a automação."
+          }
+        );
+      });
+    });
+  });
+}
 const require$1 = createRequire(import.meta.url);
 const __dirname$1 = path.dirname(fileURLToPath(import.meta.url));
 process.env.APP_ROOT = path.join(__dirname$1, "..");
@@ -33029,10 +33058,12 @@ app.on("activate", () => {
 });
 app.whenReady().then(() => {
   registerSettingsHandlers();
+  registerSearchEngineHandlers();
   createWindow();
 });
 export {
   MAIN_DIST,
   RENDERER_DIST,
-  VITE_DEV_SERVER_URL
+  VITE_DEV_SERVER_URL,
+  getDocumentsStorePath
 };

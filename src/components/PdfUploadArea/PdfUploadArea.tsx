@@ -25,10 +25,10 @@ export function PdfUploadArea({ loading, hasDocuments, onFileSelected }: PdfUplo
       <div className="upload-icon-wrap">
         <CloudUploadOutlined />
       </div>
-      <h2>{hasDocuments ? "Add another PDF" : "Upload Your First PDF"}</h2>
-      <p>Drag and drop your PDF files or click to browse</p>
+      <h2>{hasDocuments ? "Adicionar PDF" : "Adicionar seu primeiro PDF"}</h2>
+      <p>Arraste e solte aqui os arquivos ou clique e busque os arquivos</p>
       <Button type="primary" icon={<FilePdfOutlined />} loading={loading}>
-        Choose PDF
+        Escolher PDF
       </Button>
     </Upload.Dragger>
   )

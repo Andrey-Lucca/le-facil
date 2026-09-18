@@ -15,7 +15,7 @@ export function UploadPdf({ documents, errorMessage, isReading, onFileSelected }
     <div className="view-page view-page-centered upload-page">
       <section className="upload-page__header">
         <h1>Ler DANFE/NF-e</h1>
-        <p>Adicione um PDF DANFE/NF-e para extrair produtos e serviÃ§os.</p>
+        <p>Adicione um PDF DANFE/NF-e para extrair produtos e serviços.</p>
       </section>
 
       {errorMessage ? <Alert type="error" showIcon message={errorMessage} className="read-alert" /> : null}

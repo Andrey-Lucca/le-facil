@@ -28,7 +28,7 @@ export function Home({
         documents={documents}
         selectedDocumentId={selectedDocumentId}
         emptyTitle="Nenhum PDF aqui ainda."
-        emptyDescription='Use o botão "Ler PDF" para adicionar e ler um documento.'
+        emptyDescription='Use o botão "Upload PDF" para adicionar e ler um documento.'
         onOpenDocument={onOpenDocument}
         onFavoriteToggle={onFavoriteToggle}
         onTrashToggle={onTrashToggle}

@@ -1,9 +1,11 @@
 ﻿import { DeleteOutlined } from "@ant-design/icons"
-import { Button, Descriptions, Empty, Space } from "antd"
+import { App as AntApp, Button, Descriptions, Empty, Space } from "antd"
+import { useState } from "react"
 import { ExtractionTable } from "../../components/ExtractionTable/ExtractionTable"
 import type { ExtractedPdfResult } from "../../modules/pdf/models/extracted-pdf-result.model"
 import { formatFileSize } from "../../shared/utils/formatFileSize"
 import "./ExtractionResult.styles.css"
+import type { SearchResponse } from "../../../electron/ipc/search-engine.handler"
 
 type ExtractionResultProps = {
   result?: ExtractedPdfResult
@@ -19,6 +21,9 @@ export function ExtractionResult({
   onUploadClick,
   onTrashToggle,
 }: ExtractionResultProps) {
+  const { message } = AntApp.useApp()
+  const [searching, setSearching] = useState(false)
+
   if (!result) {
     return (
       <div className="view-page view-page-centered">
@@ -30,6 +35,27 @@ export function ExtractionResult({
     )
   }
 
+  async function searchPrices(id: string): Promise<void> {
+    setSearching(true)
+
+    try {
+      const searchResponse: SearchResponse = await window.ipcRenderer.invoke(
+        "search-engine:run",
+        id,
+      )
+
+      if (searchResponse.success) {
+        message.success(searchResponse.message)
+      } else {
+        message.error(searchResponse.message)
+      }
+    } catch (error) {
+      message.error(error instanceof Error ? error.message : "Erro ao executar a automação.")
+    } finally {
+      setSearching(false)
+    }
+  }
+
   return (
     <div className="view-page results-screen">
       <div className="results-content">
@@ -39,7 +65,7 @@ export function ExtractionResult({
             <p>{result.items.length} itens extraídos</p>
           </div>
           <Space>
-            <Button type="primary">Buscar preços</Button>
+            <Button type="primary" loading={searching} onClick={() => searchPrices(result.id)}>Buscar preços</Button>
             <Button
               danger
               icon={<DeleteOutlined />}

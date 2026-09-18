@@ -5,6 +5,7 @@ import { fileURLToPath, pathToFileURL } from "node:url"
 import path from "node:path"
 import { PDFParse } from "pdf-parse"
 import { registerSettingsHandlers } from "./ipc/settings.handlers"
+import { registerSearchEngineHandlers } from "./ipc/search-engine.handler"
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -35,7 +36,7 @@ type StoredDocument = {
   [key: string]: unknown
 }
 
-function getDocumentsStorePath(): string {
+export function getDocumentsStorePath(): string {
   return path.join(app.getPath("userData"), "documents.json")
 }
 
@@ -190,6 +191,7 @@ app.on("activate", () => {
 
 app.whenReady().then(() => {
   registerSettingsHandlers()
+  registerSearchEngineHandlers()
   createWindow()
 })
 

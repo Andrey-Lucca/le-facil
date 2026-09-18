@@ -2,7 +2,8 @@
 import { normalizeCurrency } from "./normalizeCurrency"
 import { normalizeNumber } from "./normalizeNumber"
 
-const NUMBER_PATTERN = String.raw`[-+]?\d{1,3}(?:\.\d{3})*,\d+|[-+]?\d+,\d+|[-+]?\d+`
+const NUMBER_PATTERN = /^[-+]?(?:\d{1,3}(?:\.\d{3})+|\d+)(?:,\d+)?$/
+const FISCAL_COLUMNS_PATTERN = /^(.*?)\s+(\d{7,8})\s+(\d{2,3})\s+([1-7]\d{3})\s+([\p{L}][\p{L}\d./_-]*)\s+(.+)$/u
 const CNPJ_PATTERN = /\b\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}\b/
 const HEADER_PATTERN = /COD\.?PROD|DESCRI|PRODUTOS|SERVICOS|VALOR\s+UNIT/i
 const MONEY_PATTERN = /\bR\$\s*\d/i
@@ -33,28 +34,28 @@ export function parseInvoiceProductLine(line: string): ExtractedProductItem | nu
     return null
   }
 
-  const numericMatches = [...compactLine.matchAll(new RegExp(NUMBER_PATTERN, "g"))]
-  if (numericMatches.length < 8) {
+  const fiscalColumns = tokens.join(" ").match(FISCAL_COLUMNS_PATTERN)
+  if (!fiscalColumns) {
     return null
   }
 
-  const trailingValues = numericMatches.slice(-8).map((match) => match[0])
-  const firstTrailingValue = numericMatches[numericMatches.length - 8]
-  const detailText = compactLine.slice(productCode.length, firstTrailingValue.index).trim()
-  const detailTokens = detailText.split(" ").filter(Boolean)
+  const [, detailText, ncmSh, cst, cfop, unit, valuesText] = fiscalColumns
+  const trailingValues = valuesText.split(" ")
 
-  if (!TEXT_PATTERN.test(detailText) || detailTokens.length < 2) {
+  // Read quantity and prices after the fiscal columns, never from numbers in the description.
+  if (
+    trailingValues.length < 3 ||
+    trailingValues.length > 8 ||
+    !trailingValues.every(value => NUMBER_PATTERN.test(value))
+  ) {
     return null
   }
 
-  const cfopIndex = detailTokens.findIndex((token) => /^\d{4}$/.test(token))
-  const ncmIndex = detailTokens.findIndex((token) => /^\d{7,8}$/.test(token))
-  const cstIndex = detailTokens.findIndex((token) => /^\d{2,3}$/.test(token))
-  const ceanIndex = detailTokens.findIndex((token) => /^\d{8,14}$/.test(token))
-
-  const unit = cfopIndex >= 0 ? detailTokens[cfopIndex + 1] ?? "" : ""
-  const orderNumber = detailTokens.find((token) => /^P?E?D?\d{3,}$/i.test(token)) ?? ""
-  const descriptionLimit = [ceanIndex, ncmIndex, cstIndex, cfopIndex]
+  const detailTokens = detailText.trim().split(" ")
+  const ceanIndex = detailTokens.findIndex((token) => /^(?:\d{8}|\d{12,14})$/.test(token))
+  const orderIndex = detailTokens.findIndex((token) => /^PED\d+$/i.test(token))
+  const orderNumber = orderIndex >= 0 ? detailTokens[orderIndex] : ""
+  const descriptionLimit = [ceanIndex, orderIndex]
     .filter((index) => index > 0)
     .sort((a, b) => a - b)[0] ?? detailTokens.length
   const description = detailTokens.slice(0, descriptionLimit).join(" ").trim()
@@ -68,9 +69,9 @@ export function parseInvoiceProductLine(line: string): ExtractedProductItem | nu
     description,
     orderNumber,
     cean: ceanIndex >= 0 ? detailTokens[ceanIndex] : "",
-    ncmSh: ncmIndex >= 0 ? detailTokens[ncmIndex] : "",
-    cst: cstIndex >= 0 ? detailTokens[cstIndex] : "",
-    cfop: cfopIndex >= 0 ? detailTokens[cfopIndex] : "",
+    ncmSh,
+    cst,
+    cfop,
     unit,
     quantity: normalizeNumber(trailingValues[0]),
     unitValue: normalizeCurrency(trailingValues[1]),

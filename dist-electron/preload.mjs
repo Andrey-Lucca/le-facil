@@ -16,7 +16,8 @@ electron.contextBridge.exposeInMainWorld("ipcRenderer", {
   invoke(...args) {
     const [channel, ...omit] = args;
     return electron.ipcRenderer.invoke(channel, ...omit);
-  }
+  },
+  runSearch: (id) => electron.ipcRenderer.invoke("search-engine:run", id)
   // You can expose other APTs you need here.
   // ...
 });

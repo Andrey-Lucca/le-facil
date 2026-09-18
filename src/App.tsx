@@ -34,7 +34,7 @@ type ConfirmAction =
   | { type: "restore"; documentId: string }
   | { type: "delete"; documentId: string }
 
-function App() {
+function AppContent() {
   const { message } = AntApp.useApp()
   const location = useLocation()
   const navigate = useNavigate()
@@ -354,6 +354,49 @@ function App() {
   }
 
   return (
+    <>
+      <AppLayout
+        searchValue={searchValue}
+        documents={documents}
+        selectedDocumentId={selectedResult?.id}
+        onSearchChange={setSearchValue}
+        onDocumentSelect={openDocument}
+      >
+        <input
+          ref={fileInputRef}
+          className="native-file-input"
+          type="file"
+          accept=".pdf,application/pdf"
+          onChange={handleNativeInputChange}
+        />
+        {isLoadingDocuments ? (
+          <Skeleton active paragraph={{ rows: 6 }} />
+        ) : (
+          renderRoutes()
+        )}
+      </AppLayout>
+
+      <Modal
+        open={isConfirm}
+        title={getConfirmTitle()}
+        okText="Confirmar"
+        cancelText="Cancelar"
+        okButtonProps={{
+          danger:
+            confirmAction?.type === "delete" ||
+            confirmAction?.type === "trash",
+        }}
+        onOk={() => void handleConfirmAction()}
+        onCancel={closeConfirm}
+      >
+        <p>{getConfirmDescription()}</p>
+      </Modal>
+    </>
+  )
+}
+
+function App() {
+  return (
     <ConfigProvider
       theme={{
         token: {
@@ -369,42 +412,7 @@ function App() {
       }}
     >
       <AntApp>
-        <AppLayout
-          searchValue={searchValue}
-          documents={documents}
-          selectedDocumentId={selectedResult?.id}
-          onSearchChange={setSearchValue}
-          onDocumentSelect={openDocument}
-        >
-          <input
-            ref={fileInputRef}
-            className="native-file-input"
-            type="file"
-            accept=".pdf,application/pdf"
-            onChange={handleNativeInputChange}
-          />
-          {isLoadingDocuments ? (
-            <Skeleton active paragraph={{ rows: 6 }} />
-          ) : (
-            renderRoutes()
-          )}
-        </AppLayout>
-
-        <Modal
-          open={isConfirm}
-          title={getConfirmTitle()}
-          okText="Confirmar"
-          cancelText="Cancelar"
-          okButtonProps={{
-            danger:
-              confirmAction?.type === "delete" ||
-              confirmAction?.type === "trash",
-          }}
-          onOk={() => void handleConfirmAction()}
-          onCancel={closeConfirm}
-        >
-          <p>{getConfirmDescription()}</p>
-        </Modal>
+        <AppContent />
       </AntApp>
     </ConfigProvider>
   )
