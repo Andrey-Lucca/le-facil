@@ -17,7 +17,7 @@ export function HeaderSearch({ searchValue, onSearchChange }: HeaderSearchProps)
       <Input
         className="topbar-search"
         size="large"
-        placeholder="Search PDFs..."
+        placeholder="Buscar PDFs..."
         prefix={<SearchOutlined />}
         value={searchValue}
         onChange={(event) => onSearchChange(event.target.value)}

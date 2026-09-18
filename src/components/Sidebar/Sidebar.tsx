@@ -38,11 +38,11 @@ function formatRelativeDate(value: string): string {
   const diffInDays = Math.floor((today.getTime() - date.getTime()) / 86_400_000)
 
   if (diffInDays <= 0) {
-    return "Today"
+    return "Hoje"
   }
 
   if (diffInDays === 1) {
-    return "Yesterday"
+    return "Ontem"
   }
 
   return date.toLocaleDateString("en-US", { month: "short", day: "numeric" })
@@ -87,9 +87,9 @@ export function Sidebar({
       </nav>
 
       <div className="sidebar-recent">
-        <span className="sidebar-section-title">Recent Files</span>
+        <span className="sidebar-section-title">Arquivos recentes</span>
         {visibleRecentDocuments.length === 0 ? (
-          <p className="sidebar-empty">No PDFs saved yet.</p>
+          <p className="sidebar-empty">Nenhum PDF salvo ainda.</p>
         ) : (
           visibleRecentDocuments.map((document, index) => (
             <button

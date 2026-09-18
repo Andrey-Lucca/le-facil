@@ -1,5 +1,5 @@
-﻿import { DownloadOutlined, SearchOutlined } from "@ant-design/icons"
-import { Button, Empty, Input, Space, Table, Tag } from "antd"
+﻿import { SearchOutlined } from "@ant-design/icons"
+import { Button, Empty, Input, Space, Table, Tag, message } from "antd"
 import type { ColumnsType } from "antd/es/table"
 import { useMemo, useState } from "react"
 import type {
@@ -8,6 +8,7 @@ import type {
 } from "../../modules/pdf/models/extracted-pdf-result.model"
 import type { ExtractedProductItem } from "../../modules/pdf/models/extracted-product-item.model"
 import "./ExtractionTable.styles.css"
+import { openCSV } from "../../modules/settings/services/settings.service"
 
 type ExtractionTableProps = {
   result?: ExtractedPdfResult
@@ -32,6 +33,21 @@ function formatMoney(value: number): string {
 export function ExtractionTable({ result }: ExtractionTableProps) {
   const [descriptionFilter, setDescriptionFilter] = useState("")
   const [productCodeSearch, setProductCodeSearch] = useState("")
+  const [openingCSV, setOpeningCSV] = useState(false)
+  const [messageApi, contextHolder] = message.useMessage()
+
+  async function handleOpenCSV() {
+    setOpeningCSV(true)
+    try {
+      await openCSV()
+    } catch (error) {
+      void messageApi.error(
+        error instanceof Error ? error.message : "Não foi possível abrir o CSV.",
+      )
+    } finally {
+      setOpeningCSV(false)
+    }
+  }
 
   const dataSource = useMemo(() => {
     const items = result?.items ?? []
@@ -124,6 +140,7 @@ export function ExtractionTable({ result }: ExtractionTableProps) {
 
   return (
     <section className="results-panel">
+      {contextHolder}
       <div className="results-header">
         <div className="results-title">
           <h2>Resultados da Extração</h2>
@@ -135,8 +152,8 @@ export function ExtractionTable({ result }: ExtractionTableProps) {
               {statusLabels[result.status]}
             </Tag>
           ) : null}
-          <Button icon={<DownloadOutlined />} disabled>
-            Exportar CSV
+          <Button id="results-access-csv" loading={openingCSV} onClick={handleOpenCSV}>
+            Acessar CSV
           </Button>
         </Space>
       </div>
@@ -165,7 +182,12 @@ export function ExtractionTable({ result }: ExtractionTableProps) {
           }
           columns={columns}
           dataSource={dataSource}
-          pagination={{ pageSize: 8, showSizeChanger: true, locale: { items_per_page: "/itens por página" } }}
+          pagination={{
+            defaultPageSize: 8,
+            pageSizeOptions: [8, 10, 20, 50, 100],
+            showSizeChanger: true,
+            locale: { items_per_page: "/itens por página" },
+          }}
           scroll={{ x: 1980, y: "calc(100vh - 430px)" }}
           size="middle"
         />

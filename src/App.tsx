@@ -154,17 +154,17 @@ function AppContent() {
       navigate("/results")
 
       if (result.status === "success") {
-        message.success(`PDF read: ${result.items.length} product items found`)
+        message.success(`PDF lido: ${result.items.length} produtos encontrados`)
       } else if (result.status === "partial") {
         message.warning(
-          "PDF read partially. Text was extracted, but product rows need review.",
+          "PDF lido parcialmente. O texto foi extraído mas os produtos precisam de revisão",
         )
       } else {
-        message.error("PDF text could not be extracted.")
+        message.error("PDF não pode ser extraído")
       }
     } catch (error) {
       const safeMessage =
-        error instanceof Error ? error.message : "Could not read this PDF"
+        error instanceof Error ? error.message : "Não foi possível ler o PDF"
       setErrorMessage(safeMessage)
       message.error("PDF reading failed")
     } finally {

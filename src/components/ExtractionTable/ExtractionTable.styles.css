@@ -46,6 +46,43 @@
   border-radius: 8px;
 }
 
+#results-access-csv {
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+#results-access-csv:not(:disabled):is(:hover, :focus-visible) {
+  background-color: #42ab49;
+  border-color: #42ab49;
+  color: #102d14;
+  box-shadow: 0 6px 16px rgb(66 171 73 / 25%);
+  transform: translateY(-2px);
+}
+
+#results-access-csv:focus-visible {
+  outline: 2px solid #287a2e;
+  outline-offset: 3px;
+}
+
+#results-access-csv:not(:disabled):active {
+  box-shadow: 0 2px 6px rgb(66 171 73 / 20%);
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #results-access-csv {
+    transition: none;
+  }
+
+  #results-access-csv:not(:disabled):is(:hover, :focus-visible, :active) {
+    transform: none;
+  }
+}
+
 @media (max-width: 760px) {
   .table-toolbar {
     grid-template-columns: 1fr;

@@ -56,6 +56,17 @@ export function ExtractionResult({
     }
   }
 
+  function getPDFTypeInPortuguese(type: string){
+    switch(type){
+      case 'invoice':
+        return "Fatura"
+      case 'bank_slip':
+        return "Boleto Bancário"
+      case "unknow":
+        return "Desconhecido"
+    }
+  }
+
   return (
     <div className="view-page results-screen">
       <div className="results-content">
@@ -80,7 +91,7 @@ export function ExtractionResult({
         <h2 className="section-title">Detalhes do documento</h2>
         <Descriptions column={1} size="small">
           <Descriptions.Item label="Tipo">
-            {result.documentType}
+            {getPDFTypeInPortuguese(result.documentType)}
           </Descriptions.Item>
           <Descriptions.Item label="Páginas">
             {result.pageCount}

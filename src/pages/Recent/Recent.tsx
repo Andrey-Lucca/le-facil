@@ -28,7 +28,7 @@ export function Recent({
         documents={documents}
         selectedDocumentId={selectedDocumentId}
         emptyTitle="Nenhum PDF recente."
-        emptyDescription="Os documentos lidos aparecerÃ£o aqui."
+        emptyDescription="Os documentos lidos aparecerão aqui."
         onOpenDocument={onOpenDocument}
         onFavoriteToggle={onFavoriteToggle}
         onTrashToggle={onTrashToggle}
