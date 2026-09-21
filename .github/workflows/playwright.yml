@@ -13,8 +13,10 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
+    - name: Install Yarn
+      run: npm install -g yarn@1.22.22
     - name: Install dependencies
-      run: npm install -g yarn && yarn
+      run: yarn install --frozen-lockfile --non-interactive
     - name: Install Playwright Browsers
       run: yarn playwright install --with-deps
     - name: Run Playwright tests

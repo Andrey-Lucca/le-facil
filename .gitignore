@@ -10,7 +10,44 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+dist-electron/
+/release/
 *.local
+
+# Yarn is the project's package manager
+/package-lock.json
+/npm-shrinkwrap.json
+/pnpm-lock.yaml
+
+# Environment values (keep sanitized examples)
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Local application data and exports
+/exports/
+/uploads/
+/documents.json
+/settings.json
+precos-*.csv
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Private keys and signing credentials
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Generated reports and caches
+/coverage/
+/.nyc_output/
+/.cache/
+*.tsbuildinfo
 
 # Editor directories and files
 .vscode/*

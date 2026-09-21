@@ -81,7 +81,7 @@ export function Config() {
             <Form.Item label="Caminho do script">
               <Input
                 style={{ background: "#FFF" }}
-                placeholder="Ex.: C:\\Users\\Drey\\Documents\\script.js"
+                placeholder="Ex.: C:\\Users\\User\\Documents\\script.js"
                 onChange={(e) => setScriptPath(e.target.value)}
                 value={scriptPath}
               />
@@ -90,7 +90,7 @@ export function Config() {
             <Form.Item label="Pasta de exportação">
               <Input
                 style={{ background: "#FFF" }}
-                placeholder="Ex.: C:\\Users\\Drey\\Documents"
+                placeholder="Ex.: C:\\Users\\User\\Documents"
                 onChange={(e) => setExportFolder(e.target.value)}
                 value={exportFolder}
               />

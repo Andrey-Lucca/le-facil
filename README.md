@@ -1,30 +1,50 @@
-# React + TypeScript + Vite
+﻿# Lê Fácil
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicativo desktop com Electron, React e TypeScript para extrair itens de PDFs,
+consultar preços e exportar os resultados em CSV.
 
-Currently, two official plugins are available:
+## Desenvolvimento
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Use Node.js e Yarn Classic 1.22.22. O gerenciador adotado é o Yarn;
+versione o `yarn.lock` ao alterar dependências.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```sh
+yarn install --frozen-lockfile
+yarn dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Na tela de configurações, informe o caminho de `scripts/searchAutomation.js`
+e a pasta de exportação. A automação usa Chromium; antes da primeira execução:
+
+```sh
+yarn playwright install chromium
+```
+
+## Verificação
+
+```sh
+yarn lint
+yarn tsc --noEmit
+yarn playwright test
+```
+
+Os testes em `tests/invoiceParser.spec.ts` verificam a leitura dos itens das notas.
+Eles não cobrem a interface nem a integração com o Electron.
+
+## Empacotamento
+
+```sh
+yarn build
+```
+
+O build gera `dist/`, `dist-electron/` e instaladores em `release/`.
+Essas saídas não devem ser versionadas.
+
+## Dados locais
+
+As configurações e documentos são armazenados em `settings.json` e
+`documents.json` na pasta de dados do usuário do Electron. Os CSVs são gravados
+na pasta de exportação configurada no aplicativo.
+
+Não inclua credenciais, documentos reais ou exportações no repositório.
+Use dados sintéticos nos testes e mantenha valores secretos fora do Git.

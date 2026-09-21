@@ -37,9 +37,11 @@ export function ExtractionTable({ result }: ExtractionTableProps) {
   const [messageApi, contextHolder] = message.useMessage()
 
   async function handleOpenCSV() {
+    if (!result) return
     setOpeningCSV(true)
     try {
-      await openCSV()
+      const formattedFilename = result.fileName.replace(/\.[^.]+$/, '');
+      await openCSV(formattedFilename)
     } catch (error) {
       void messageApi.error(
         error instanceof Error ? error.message : "Não foi possível abrir o CSV.",
@@ -152,7 +154,7 @@ export function ExtractionTable({ result }: ExtractionTableProps) {
               {statusLabels[result.status]}
             </Tag>
           ) : null}
-          <Button id="results-access-csv" loading={openingCSV} onClick={handleOpenCSV}>
+          <Button id="results-access-csv" disabled={!result} loading={openingCSV} onClick={handleOpenCSV}>
             Acessar CSV
           </Button>
         </Space>

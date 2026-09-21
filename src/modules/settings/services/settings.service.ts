@@ -22,6 +22,6 @@ export async function getSettingsStorePath(): Promise<string> {
   return window.ipcRenderer.invoke("settings:store-path")
 }
 
-export async function openCSV(): Promise<void> {
-  await window.ipcRenderer.invoke("exports:open-csv")
+export async function openCSV(fileName: string): Promise<void> {
+  await window.ipcRenderer.invoke("exports:open-csv", fileName)
 }

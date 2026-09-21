@@ -10,14 +10,17 @@ import {
 } from "../storage/settings.store"
 
 export function registerSettingsHandlers(): void {
-  ipcMain.handle("exports:open-csv", async () => {
+  ipcMain.handle("exports:open-csv", async (_event, fileName: string) => {
+    if (typeof fileName !== "string" || !fileName.trim() || /[\\/]/.test(fileName)) {
+      throw new Error("Selecione um PDF com um nome de arquivo válido.")
+    }
     const { exportFolder } = await readSettingsStore()
     if (!exportFolder.trim()) {
       throw new Error("Configure a pasta de exportação antes de abrir o CSV.")
     }
 
     const date = new Date().toLocaleDateString("pt-BR").replace(/\//g, "-")
-    const csvPath = path.join(exportFolder, `precos-${date}.csv`)
+    const csvPath = path.join(exportFolder, `precos-${fileName}-${date}.csv`)
     try {
       const file = await stat(csvPath)
       if (!file.isFile()) throw new Error("Não é um arquivo")

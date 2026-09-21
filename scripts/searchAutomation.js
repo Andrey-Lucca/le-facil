@@ -40,7 +40,7 @@ async function readDocuments(documentStorePath) {
   return documents
 }
 
-async function getDocumentProducts(id, documentStorePath) {
+async function getDocumentExportData(id, documentStorePath) {
   const documents = await readDocuments(documentStorePath)
   const document = findDocumentById(documents, id)
 
@@ -48,7 +48,7 @@ async function getDocumentProducts(id, documentStorePath) {
     throw new Error(`O documento "${id}" não possui uma lista de itens válida.`)
   }
 
-  return document.items
+  return { fileName: document.fileName, items: document.items }
 }
 
 function getSKUCodes(products) {
@@ -139,7 +139,7 @@ function formatCsvValue(value) {
   return text
 }
 
-async function exportProductsCsv(products, exportFolder) {
+async function exportProductsCsv(products, exportFolder, filename) {
   const headers = [
     "Preço Pago (Total)",
     "Preço Unitário",
@@ -148,6 +148,8 @@ async function exportProductsCsv(products, exportFolder) {
     "Código SKU",
     "Preço analisado do Site"
   ]
+
+  const formattedFilename = filename.replace(/\.[^.]+$/, '');
 
   const rows = products.map(product => [
     product.totalValue.toFixed(2).replace(".", ","),
@@ -163,7 +165,7 @@ async function exportProductsCsv(products, exportFolder) {
     .join("\r\n")
 
   const date = new Date().toLocaleDateString("pt-BR").replace(/\//g, "-")
-  const exportPath = join(exportFolder, `precos-${date}.csv`)
+  const exportPath = join(exportFolder, `precos-${formattedFilename}-${date}.csv`)
 
   await mkdir(exportFolder, { recursive: true })
   await writeFile(exportPath, `\uFEFF${content}\r\n`, "utf8")
@@ -174,16 +176,16 @@ async function exportProductsCsv(products, exportFolder) {
 async function runPriceSearch() {
   const { id, exportFolder, documentStorePath } = getScriptArguments()
 
-  const products = await getDocumentProducts(id, documentStorePath)
+  const { items: products, fileName } = await getDocumentExportData(id, documentStorePath)
 
   console.log("Produtos:", products)
   console.log("Pasta de exportação:", exportFolder)
 
   const productsPrice = await getProductsPrice(products)
-  console.log("Products price =>", productsPrice)
+  console.log("Products price:", productsPrice)
 
   const productsWithSuggestedPrice = getProductsWithSuggestedPrice(products, productsPrice)
-  const exportPath = await exportProductsCsv(productsWithSuggestedPrice, exportFolder)
+  const exportPath = await exportProductsCsv(productsWithSuggestedPrice, exportFolder, fileName)
 
   console.log("CSV exportado:", exportPath)
 
