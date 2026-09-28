@@ -40,8 +40,7 @@ export function ExtractionTable({ result }: ExtractionTableProps) {
     if (!result) return
     setOpeningCSV(true)
     try {
-      const formattedFilename = result.fileName.replace(/\.[^.]+$/, '');
-      await openCSV(formattedFilename)
+      await openCSV()
     } catch (error) {
       void messageApi.error(
         error instanceof Error ? error.message : "Não foi possível abrir o CSV.",

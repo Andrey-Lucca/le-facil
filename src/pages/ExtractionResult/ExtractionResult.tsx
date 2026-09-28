@@ -76,7 +76,9 @@ export function ExtractionResult({
             <p>{result.items.length} itens extraídos</p>
           </div>
           <Space>
-            <Button type="primary" loading={searching} onClick={() => searchPrices(result.id)}>Buscar preços</Button>
+            <Button type="primary" loading={searching} onClick={() => searchPrices(result.id)}>
+              {result.items.length ? "Buscar preços e exportar" : "Exportar CSV mensal"}
+            </Button>
             <Button
               danger
               icon={<DeleteOutlined />}
@@ -102,6 +104,17 @@ export function ExtractionResult({
           <Descriptions.Item label="Produtos">
             {result.items.length}
           </Descriptions.Item>
+          {[
+            ["Fornecedor", "hering"],
+            ["Nº NF", result.invoiceNumber],
+            ["Número de parcelas", result.installmentCount?.toString()],
+            ["Valor (R$)", result.totalAmount?.toLocaleString("pt-BR", { minimumFractionDigits: 2 })],
+            ["Valor pago (R$)", result.paidAmount?.toLocaleString("pt-BR", { minimumFractionDigits: 2 })],
+            ["Situação", "A pagar"],
+            ["Forma de pagamento", result.paymentMethod || "Boleto"],
+          ].map(([label, value]) => (
+            <Descriptions.Item key={label} label={label}>{value || "—"}</Descriptions.Item>
+          ))}
           {result.issueDate ? (
             <Descriptions.Item label="Data de emissão">
               {result.issueDate}

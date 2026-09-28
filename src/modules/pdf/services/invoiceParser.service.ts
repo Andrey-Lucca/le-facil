@@ -6,6 +6,7 @@
 import type { ExtractedProductItem } from "../models/extracted-product-item.model"
 import { normalizeCurrency } from "../utils/normalizeCurrency"
 import { parseInvoiceProductLine } from "../utils/tableLineParser"
+import { extractFinancialFields } from "./financialParser.service"
 
 type ParsePdfOptions = {
   fileName: string
@@ -30,10 +31,6 @@ function detectDocumentType(text: string): DocumentType {
 
 function extractAccessKey(text: string): string | undefined {
   return text.match(/\b\d{44}\b/)?.[0]
-}
-
-function extractIssueDate(text: string): string | undefined {
-  return text.match(/\b\d{2}\/\d{2}\/\d{4}\b/)?.[0]
 }
 
 function extractTotalAmount(text: string): number | undefined {
@@ -78,16 +75,17 @@ export function parseExtractedPdf({ fileName, rawText, pageCount, fileSize }: Pa
   const items = documentType === "invoice" ? extractInvoiceItems(rawText) : []
   const status = inferStatus(documentType, items, rawText)
   const now = new Date().toISOString()
+  const financial = extractFinancialFields(rawText)
 
   return {
     id: crypto.randomUUID(),
     fileName,
     documentType,
     accessKey: extractAccessKey(rawText),
-    issuerName: extractPartyName(rawText, /(?:EMITENTE|IDENTIFICAÃ‡ÃƒO DO EMITENTE)\s+([^\n\r]+)/i),
     recipientName: extractPartyName(rawText, /(?:DESTINAT[ÃA]RIO|REMETENTE)\s+([^\n\r]+)/i),
-    issueDate: extractIssueDate(rawText),
-    totalAmount: extractTotalAmount(rawText),
+    ...financial,
+    issuerName: financial.issuerName || extractPartyName(rawText, /(?:EMITENTE|IDENTIFICAÇÃO DO EMITENTE)\s+([^\n\r]+)/i),
+    totalAmount: financial.totalAmount ?? extractTotalAmount(rawText),
     pageCount,
     fileSize,
     items,

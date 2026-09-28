@@ -10,22 +10,20 @@ import {
 } from "../storage/settings.store"
 
 export function registerSettingsHandlers(): void {
-  ipcMain.handle("exports:open-csv", async (_event, fileName: string) => {
-    if (typeof fileName !== "string" || !fileName.trim() || /[\\/]/.test(fileName)) {
-      throw new Error("Selecione um PDF com um nome de arquivo válido.")
-    }
+  ipcMain.handle("exports:open-csv", async () => {
     const { exportFolder } = await readSettingsStore()
     if (!exportFolder.trim()) {
       throw new Error("Configure a pasta de exportação antes de abrir o CSV.")
     }
 
-    const date = new Date().toLocaleDateString("pt-BR").replace(/\//g, "-")
-    const csvPath = path.join(exportFolder, `precos-${fileName}-${date}.csv`)
+    const date = new Date()
+    const month = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
+    const csvPath = path.join(exportFolder, `contas-a-pagar-${month}.csv`)
     try {
       const file = await stat(csvPath)
       if (!file.isFile()) throw new Error("Não é um arquivo")
     } catch {
-      throw new Error(`CSV indisponível em ${csvPath}. Verifique se a exportação de hoje foi concluída.`)
+      throw new Error(`CSV indisponível em ${csvPath}. Exporte os dados deste mês antes de acessar o arquivo.`)
     }
 
     const error = await shell.openPath(csvPath)

@@ -1,5 +1,5 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises"
-import { join } from "node:path"
+import { readFile } from "node:fs/promises"
+import { appendMonthlyCsv, exportFinancialCsv } from "./monthlyCsv.js"
 import { chromium } from 'playwright'
 
 
@@ -48,7 +48,7 @@ async function getDocumentExportData(id, documentStorePath) {
     throw new Error(`O documento "${id}" não possui uma lista de itens válida.`)
   }
 
-  return { fileName: document.fileName, items: document.items }
+  return document
 }
 
 function getSKUCodes(products) {
@@ -129,17 +129,7 @@ function getProductsWithSuggestedPrice(products, productsPrice) {
   })
 }
 
-function formatCsvValue(value) {
-  const text = String(value ?? "")
-
-  if (/[\t\r\n"]/.test(text)) {
-    return `"${text.replace(/"/g, '""')}"`
-  }
-
-  return text
-}
-
-async function exportProductsCsv(products, exportFolder, filename) {
+async function exportProductsCsv(products, exportFolder) {
   const headers = [
     "Preço Pago (Total)",
     "Preço Unitário",
@@ -149,7 +139,6 @@ async function exportProductsCsv(products, exportFolder, filename) {
     "Preço analisado do Site"
   ]
 
-  const formattedFilename = filename.replace(/\.[^.]+$/, '');
 
   const rows = products.map(product => [
     product.totalValue.toFixed(2).replace(".", ","),
@@ -160,23 +149,20 @@ async function exportProductsCsv(products, exportFolder, filename) {
     product.priceFoundOnHering ? "sim" : "não"
   ])
 
-  const content = [headers, ...rows]
-    .map(row => row.map(formatCsvValue).join("\t"))
-    .join("\r\n")
+  return appendMonthlyCsv(exportFolder, "precos", headers, rows)
 
-  const date = new Date().toLocaleDateString("pt-BR").replace(/\//g, "-")
-  const exportPath = join(exportFolder, `precos-${formattedFilename}-${date}.csv`)
-
-  await mkdir(exportFolder, { recursive: true })
-  await writeFile(exportPath, `\uFEFF${content}\r\n`, "utf8")
-
-  return exportPath
 }
 
 async function runPriceSearch() {
   const { id, exportFolder, documentStorePath } = getScriptArguments()
 
-  const { items: products, fileName } = await getDocumentExportData(id, documentStorePath)
+  const document = await getDocumentExportData(id, documentStorePath)
+  const products = document.items
+
+  if (products.length === 0) {
+    console.log("CSV exportado:", await exportFinancialCsv(document, exportFolder))
+    return
+  }
 
   console.log("Produtos:", products)
   console.log("Pasta de exportação:", exportFolder)
@@ -185,7 +171,8 @@ async function runPriceSearch() {
   console.log("Products price:", productsPrice)
 
   const productsWithSuggestedPrice = getProductsWithSuggestedPrice(products, productsPrice)
-  const exportPath = await exportProductsCsv(productsWithSuggestedPrice, exportFolder, fileName)
+  const exportPath = await exportProductsCsv(productsWithSuggestedPrice, exportFolder)
+  console.log("CSV financeiro exportado:", await exportFinancialCsv({ ...document, items: productsWithSuggestedPrice }, exportFolder))
 
   console.log("CSV exportado:", exportPath)
 
